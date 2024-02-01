@@ -1,0 +1,111 @@
+import React, { useRef, useState } from "react";
+import Header from "./Header";
+import { checkValidData } from "../utils/validate";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
+
+const Login = () => {
+  const [isSignInForm, setIsSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(true);
+
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const toggleSignInForm = () => {
+    setIsSignInForm(!isSignInForm);
+  };
+  const handleButtonClick = () => {
+    // Validate Form data
+    const message = checkValidData(email.current.value, password.current.value);
+    setErrorMessage(message);
+
+    if (message) return;
+
+    // Sign in/ sign up logic
+
+    if (!isSignInForm) {
+      // Signup logic
+      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    } else {
+      // Sign in Logic
+      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + " " + errorMessage);
+        });
+    }
+  };
+  return (
+    <div>
+      <Header />
+      <div>
+        <img
+          src="https://assets.nflxext.com/ffe/siteui/vlv3/32c47234-8398-4a4f-a6b5-6803881d38bf/eed3a573-8db7-47ca-a2ce-b511e0350439/IN-en-20240122-popsignuptwoweeks-perspective_alpha_website_small.jpg"
+          alt="background"
+          className="absolute"
+        />
+      </div>
+      <form
+        action=""
+        onSubmit={(e) => e.preventDefault()}
+        className="w-4/12 absolute p-12 bg-black left mt-36 mx-auto right-0 left-0 text-white bg-opacity-70">
+        <h2 className="font-bold text-3xl py-4">{isSignInForm ? "Sign In" : "Sign up"}</h2>
+        {!isSignInForm && (
+          <input
+            ref={name}
+            type="text"
+            placeholder="Enter Name"
+            name="name"
+            className="p-4 my-4 w-full rounded-lg bg-gray-800"
+          />
+        )}
+
+        <input
+          ref={email}
+          type="email"
+          placeholder="Enter your email"
+          name="email"
+          autoComplete="on"
+          className="p-4 my-4  w-full rounded-lg bg-gray-800"
+        />
+        <input
+          ref={password}
+          type="password"
+          placeholder="Password"
+          name="password"
+          className="p-4 my-4 w-full rounded-lg bg-gray-800"
+        />
+        <p className="text-red-500 text-center">{errorMessage} </p>
+        <button
+          className="p-4 my-4 bg-red-700 w-full hover:underline"
+          onClick={handleButtonClick}>
+          {isSignInForm ? "Sign In" : "Sign up"}
+        </button>
+        <p className="py-4">
+          {isSignInForm ? "New to Netflix? " : "Already a user? "}
+
+          <span onClick={toggleSignInForm} className="hover:cursor-pointer hover:underline">
+            {isSignInForm ? "Sign up now" : "Sign In now"}
+          </span>
+        </p>
+      </form>
+    </div>
+  );
+};
+
+export default Login;
