@@ -46,6 +46,7 @@ const Header = () => {
 
     // unsubscribe when component unmount
     return () => unsubscribe();
+    // eslint-disable-next-line
   }, []);
 
   return (
