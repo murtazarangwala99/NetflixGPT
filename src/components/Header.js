@@ -6,12 +6,17 @@ import { useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
-import { LOGO_URL } from "../utils/constants";
+import { LOGO_URL, SUPPORTED_LANGUAGES } from "../utils/constants";
+import { toggleGptSearchView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
+
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
+
   // console.log(user);
 
   const handleSignOut = () => {
@@ -49,12 +54,41 @@ const Header = () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleGptSearchClick = () => {
+    // Toggle GPT Search button
+    dispatch(toggleGptSearchView());
+  };
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
   return (
     <div className="absolute z-10 flex justify-between items-center w-screen px-12 py-2 bg-gradient-to-b from-black">
       <img src={LOGO_URL} alt="logo" className="w-[250px]" />
       {/* Show only when sing-in */}
       {user && (
         <div className="flex items-center gap-2">
+          {/* <button
+            className="py-2 px-4 bg-purple-700 my-2 mx-4 text-white rounded-lg"
+            onClick={handleGptSearchClick}>
+            GPT Search
+          </button> */}
+
+          {showGptSearch && (
+            <select className="p-2 m-2 bg-gray-900 text-white" onChange={handleLanguageChange}>
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
+          <button
+            className="py-2 px-4 mx-4 my-2 bg-purple-800 text-white rounded-lg"
+            onClick={handleGptSearchClick}>
+            {showGptSearch ? "Homepage" : "GPT Search"}
+          </button>
+
           <img src={user.photoURL} alt="user" className="w-[50px] rounded-lg " />
           <button
             className="p-2 m-2 bg-red-300 rounded-lg hover:underline font-semibold"
