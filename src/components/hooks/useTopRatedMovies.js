@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTopRatedMovies } from "../../utils/movieSlice";
 
 const useTopRatedMovies = () => {
   const dispatch = useDispatch();
+  // const topRatedMovies = useSelector((store) => store.movie.topRatedMovies);
   useEffect(() => {
+    // !topRatedMovies && getTopRatedMovies();
     getTopRatedMovies();
     // eslint-disable-next-line
   }, []);

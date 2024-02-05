@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUpcomingMovies } from "../../utils/movieSlice";
 
 const useUpcomingMovies = () => {
   const dispatch = useDispatch();
+  // const upcomingMovies = useSelector((store) => store.movie.upcomingMovies);
   useEffect(() => {
+    // !upcomingMovies && getUpcomingMovies();
     getUpcomingMovies();
     // eslint-disable-next-line
   }, []);

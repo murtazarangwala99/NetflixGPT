@@ -5,10 +5,13 @@ import { addTrailerVideo } from "../../utils/movieSlice";
 
 const useMovieTrailer = (movieId) => {
   const dispatch = useDispatch();
-  //   const trailerVideo = useSelector((store) => store.movies.trailerVideo);
+  // const trailerVideo = useSelector((store) => store.movies.trailerVideo);
   // fetch Trailer Video and update store
   useEffect(() => {
+    // !trailerVideo && getMovieVideos();
+
     getMovieVideos();
+    // eslint-disable-next-line
   }, []);
   const getMovieVideos = async () => {
     const data = await fetch(

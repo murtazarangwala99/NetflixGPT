@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { API_OPTIONS } from "../../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPopularMovies } from "../../utils/movieSlice";
 
 const usePopularMovies = () => {
   //  FEtch data from TMDB and update store
   const dispatch = useDispatch();
+  // const popularMovies = useSelector((store) => store.movie.popularMovies);
 
   useEffect(() => {
+    // !popularMovies && getPopularMovie();
+
     getPopularMovie();
     // eslint-disable-next-line
   }, []);
