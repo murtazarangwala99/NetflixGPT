@@ -10,7 +10,6 @@ import { LOGO_URL, SUPPORTED_LANGUAGES } from "../utils/constants";
 import { toggleGptSearchView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
 
-
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,17 +62,11 @@ const Header = () => {
     dispatch(changeLanguage(e.target.value));
   };
   return (
-    <div className="absolute z-10 flex justify-between items-center w-screen px-12 py-2 bg-gradient-to-b from-black">
-      <img src={LOGO_URL} alt="logo" className="w-[250px]" />
+    <div className="absolute z-10 flex justify-between items-center w-screen px-12 py-2 bg-gradient-to-b from-black flex-col md:flex-row">
+      <img src={LOGO_URL} alt="logo" className="w-[250px] mx-auto md:mx-0" />
       {/* Show only when sing-in */}
       {user && (
-        <div className="flex items-center gap-2">
-          {/* <button
-            className="py-2 px-4 bg-purple-700 my-2 mx-4 text-white rounded-lg"
-            onClick={handleGptSearchClick}>
-            GPT Search
-          </button> */}
-
+        <div className="flex items-center gap-2 justify-between">
           {showGptSearch && (
             <select className="p-2 m-2 bg-gray-900 text-white" onChange={handleLanguageChange}>
               {SUPPORTED_LANGUAGES.map((lang) => (
@@ -89,7 +82,7 @@ const Header = () => {
             {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
 
-          <img src={user.photoURL} alt="user" className="w-[50px] rounded-lg " />
+          <img src={user.photoURL} alt="user" className="hidden md:block w-12 h-12" />
           <button
             className="p-2 m-2 bg-red-300 rounded-lg hover:underline font-semibold"
             onClick={handleSignOut}>
